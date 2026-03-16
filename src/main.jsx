@@ -3,11 +3,15 @@ import { createRoot } from 'react-dom/client'
 import {RouterProvider, createBrowserRouter } from 'react-router'
 
 import Homepage from './components/Homepage'
-
+import Post from './components/Post'
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Homepage/>
+    },
+    {
+        path: "post/:id",
+        element: <Post/>
     }
 ])
 
