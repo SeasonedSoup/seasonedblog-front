@@ -24,8 +24,8 @@ function Homepage() {
     
     fetchPosts();
 
-    function visitPost(id) {
-        navigate(`/post/${id}`);
+    function visitPost(id, post) {
+        navigate(`/post/${id}`, {state: {post}});
     }
     return (
         <>
@@ -35,7 +35,7 @@ function Homepage() {
                 return (
                     <div key={post.id}>
                         <h2>{post.title}</h2>
-                        <button onClick={() => visitPost(post.id)}>View Post</button>
+                        <button onClick={() => visitPost(post.id, post)}>View Post</button>
                     </div>
                 )
             })}
