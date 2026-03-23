@@ -7,6 +7,7 @@ export const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true);
     
     async function verifyAuth() {
+        setLoading(true)
         const token = localStorage.getItem("token");
 
         if(!token) {
@@ -34,6 +35,7 @@ export const AuthProvider = ({children}) => {
             setUser(result);
         } catch (err) {
             console.error(err);
+            setUser(null)
         } finally {
             setLoading(false)
         }

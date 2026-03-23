@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
 
 function Post() {
@@ -10,26 +10,42 @@ function Post() {
 
     async function fetchComments() {
         console.log("FETCHING COMMENTS...")
-        const url = "http://localhost:8000/api/comments"
+        const url = `http://localhost:8000/api/comments/${params.id}`
+
+        const response = await fetch(url, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        const result = await response.json()
+        setComments(result);
     }
+
+    useEffect(() => {
+        fetchComments();
+    }, [])
 
     async function createComment(e) {
         e.preventDefault();
 
-        const url = "http://localhost:8000/api/comment"
+        const url = `http://localhost:8000/api/comment/${params.id}`
         const token = localStorage.getItem("token")
 
         const response = await fetch(url, {
             method: "POST",
             headers : {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
 
-            body: JSON.stringify({comment})
+            body: JSON.stringify({text: comment})
         })
 
         const result = await response.json();
         console.log(result);
+        setComments(prev => [...prev, result]);
+        setComment("");
     }
 
     const {post} = location.state || {}
@@ -37,9 +53,22 @@ function Post() {
         <>
             <h1>{params.id} {post.title} {post.content}</h1>
 
+            <h1>Comments</h1>
+            {comments.length > 0 ? (
+            comments.map((comment) => {
+                return (
+                    <div key={comment.id}>
+                    <h2>{comment.text}</h2>
+                    <h2>{comment.timestamp}</h2>
+                </div>
+                );
+            })
+            ) : (<p>No comments yet</p>)   
+            }
+            
             <form onSubmit={createComment}>
                 <label htmlFor="comment">Comment:</label>
-                <input type="text" id="comment" name="comment" onChange={(e) => setComment(e.target.value)}/>
+                <input type="text" id="comment" name="comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
                 <button>Submit </button>    
             </form>     
         </>
