@@ -8,23 +8,23 @@ function Post() {
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
 
-    async function fetchComments() {
-        console.log("FETCHING COMMENTS...")
-        const url = `http://localhost:8000/api/comments/${params.id}`
-
-        const response = await fetch(url, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-
-        const result = await response.json()
-        setComments(result);
-    }
 
     useEffect(() => {
+        async function fetchComments() {
+            console.log("FETCHING COMMENTS...")
+            const url = `http://localhost:8000/api/comments/${params.id}`
+
+            const response = await fetch(url, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+
+            const result = await response.json()
+            setComments(result);
+        }
         fetchComments();
-    }, [])
+    }, [params.id])
 
     async function createComment(e) {
         e.preventDefault();
