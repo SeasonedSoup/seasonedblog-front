@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-
+import { API_URL } from "../../apiUrl";
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
@@ -16,7 +16,7 @@ export const AuthProvider = ({children}) => {
             return;
         }
 
-        const url = "http://localhost:8000/api/"
+        const url = `${API_URL}/api/`
         try {
             const response = await fetch(url, {
             method: "GET",

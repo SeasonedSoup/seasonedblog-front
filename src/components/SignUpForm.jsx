@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { API_URL } from "../apiUrl";
 function SignUpForm() {
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
@@ -9,7 +9,7 @@ function SignUpForm() {
     async function signup(e) {
         e.preventDefault();
 
-        const url = "http://localhost:8000/api/signup"
+        const url = `${API_URL}/api/signup`
 
         if (password !== confirmPassword) {
             alert("passwords do not match");

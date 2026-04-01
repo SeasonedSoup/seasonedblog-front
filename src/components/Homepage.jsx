@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import {useAuth} from "./AuthToken/AuthContext"
-
+import { API_URL } from "../apiUrl";
 function Homepage() {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ function Homepage() {
     const [password, setPassword] = useState("");
 
     async function fetchPosts() {
-            const url = "http://localhost:8000/api/publishedPosts"
+            const url = `${API_URL}/api/publishedPosts`
 
             const response = await fetch(url, {
                 headers: {

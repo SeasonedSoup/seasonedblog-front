@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
+import CommentForm from "./CommentForm";
+import { API_URL } from "../apiUrl";
 
 function Post() {
     const params = useParams();
     const location = useLocation();
-
-    const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
 
 
     useEffect(() => {
         async function fetchComments() {
             console.log("FETCHING COMMENTS...")
-            const url = `http://localhost:8000/api/comments/${params.id}`
+            const url = `${API_URL}/api/comments/${params.id}`
 
             const response = await fetch(url, {
                 headers: {
@@ -26,10 +26,10 @@ function Post() {
         fetchComments();
     }, [params.id])
 
-    async function createComment(e) {
-        e.preventDefault();
+    async function createComment(comment) {
+        console.log(comment)
 
-        const url = `http://localhost:8000/api/comment/${params.id}`
+        const url = `${API_URL}/api/comment/${params.id}`
         const token = localStorage.getItem("token")
 
         const response = await fetch(url, {
@@ -45,7 +45,6 @@ function Post() {
         const result = await response.json();
         console.log(result);
         setComments(prev => [...prev, result]);
-        setComment("");
     }
 
     const {post} = location.state || {}
@@ -66,11 +65,7 @@ function Post() {
             ) : (<p>No comments yet</p>)   
             }
             
-            <form onSubmit={createComment}>
-                <label htmlFor="comment">Comment:</label>
-                <input type="text" id="comment" name="comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
-                <button>Submit </button>    
-            </form>     
+            <CommentForm createComment={createComment}/>
         </>
     )
 }
