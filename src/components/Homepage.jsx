@@ -32,7 +32,7 @@ function Homepage() {
     async function login(e) {
         e.preventDefault();
         console.log("logging in")
-        const url = "http://localhost:8000/api/login"
+        const url = `${API_URL}/api/login`
 
         try {
             const response = await fetch(url, {
